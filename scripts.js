@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function getTargetPosition() {
     const messageRect = messageDiv.getBoundingClientRect();
     return {
-      x: messageRect.left + messageRect.width/2 - interactiveFirefly.offsetWidth/2,
+      x: messageRect.left + messageRect.width / 2 - interactiveFirefly.offsetWidth / 2,
       y: messageRect.bottom + 70
     };
   }
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     // Remove initial animation
     interactiveFirefly.style.animation = 'none';
-    
+
     const startRect = interactiveFirefly.getBoundingClientRect();
     const startX = startRect.left;
     const startY = startRect.top;
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Create meandering path animation
     const animation = interactiveFirefly.animate([
-      { 
+      {
         transform: `translate(${0}px, ${0}px)`,
         opacity: 1
       },
@@ -155,48 +155,63 @@ document.addEventListener('DOMContentLoaded', () => {
     // When animation completes
     animation.onfinish = () => {
       interactiveFirefly.style.transform = `translate(${target.x - startX}px, ${target.y - startY}px)`;
+
+      // Create and show text message
+      const message = document.createElement('div');
+      message.className = 'firefly-message';
+      message.textContent = 'Say yes? Please.';
+      // Position message 40px below firefly
+      const fireflyRect = interactiveFirefly.getBoundingClientRect();
+      message.style.top = `${fireflyRect.bottom + 40}px`;
+
+      document.body.appendChild(message);
+
+      // Remove message element after animation
+      setTimeout(() => {
+        message.remove();
+      }, 4000);
     };
-  }, 2000);
-});
+  });
 
-// Typewriter effect for messages
-const messages = [
-  "Su, my love",
-  "Things have been rough the past few months ever since I got back",
-  "I know it's just us missing each other",
-  "But something that never changed was how much I kept falling each and every day",
-  "I love you, I hope someday we can have the life we wish.",
-  "Will you be my Valentine?" // This sentence remains visible
-];
+  // Typewriter effect for messages
+  const messages = [
+    "Su, my love",
+    "Things have been rough the past few months ever since I got back",
+    "I know it's just us missing each other",
+    "But something that never changed was how much I kept falling each and every day",
+    "I love you, I hope someday we can have the life we wish.",
+    "Will you be my Valentine?" // This sentence remains visible
+  ];
 
-let index = 0;
-let charIndex = 0;
-const speed = 50; // Typing speed (ms)
-const delayBetweenMessages = 1500; // Delay between messages
-const messageContainer = document.querySelector(".text");
+  let index = 0;
+  let charIndex = 0;
+  const speed = 50; // Typing speed (ms)
+  const delayBetweenMessages = 1500; // Delay between messages
+  const messageContainer = document.querySelector(".text");
 
-function typeWriter() {
-  if (index < messages.length) {
-    if (charIndex < messages[index].length) {
-      messageContainer.innerHTML += messages[index].charAt(charIndex);
-      charIndex++;
-      setTimeout(typeWriter, speed);
-    } else {
-      if (index < messages.length - 1) {
-        setTimeout(() => {
-          messageContainer.innerHTML = "";
-          charIndex = 0;
-          index++;
-          typeWriter();
-        }, delayBetweenMessages);
+  function typeWriter() {
+    if (index < messages.length) {
+      if (charIndex < messages[index].length) {
+        messageContainer.innerHTML += messages[index].charAt(charIndex);
+        charIndex++;
+        setTimeout(typeWriter, speed);
+      } else {
+        if (index < messages.length - 1) {
+          setTimeout(() => {
+            messageContainer.innerHTML = "";
+            charIndex = 0;
+            index++;
+            typeWriter();
+          }, delayBetweenMessages);
+        }
       }
     }
   }
-}
 
-// Start the typewriter effect only after the fade-in animation completes
-messageContainer.addEventListener("animationend", function(e) {
-  if (e.animationName === "fadeIn") {
-    typeWriter();
-  }
+  // Start the typewriter effect only after the fade-in animation completes
+  messageContainer.addEventListener("animationend", function (e) {
+    if (e.animationName === "fadeIn") {
+      typeWriter();
+    }
+  });
 });

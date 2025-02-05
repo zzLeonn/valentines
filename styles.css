@@ -20,7 +20,6 @@ body {
   overflow: hidden;
   perspective: 1000px;
   color: white;
-  
   text-align: center;
 }
 
@@ -32,7 +31,8 @@ body {
   width: 80%;            /* Adjusts for responsiveness */
   font-size: 2rem;       /* Relative font size */
   font-weight: 300;
-  color: #f0e6d2;        /* Soft, warm text color */
+  color: #f0e6d2;
+  font-family: 'sans-serif';
   opacity: 0;           /* Start hidden */
   animation: fadeIn 2s ease forwards;
   animation-delay: 2s;   /* Delay the fade-in by 2 seconds */
@@ -963,12 +963,74 @@ mask-image: linear-gradient(to top, transparent 40%, #079097 80%) !important;
   top: 70%;
   width: 12px;
   height: 12px;
-  background: radial-gradient(circle, #ffea8a, rgba(255, 234, 138, 0));
+  background: radial-gradient(circle, #ffea8a 20%, rgba(255, 234, 138, 0) 70%);
   border-radius: 50%;
   box-shadow: 0 0 12px 4px rgba(255, 234, 138, 0.8);
   cursor: pointer;
-  z-index: 1000;
-  animation: initialDrift 20s infinite ease-in-out;
+  z-index: 3000;
+  pointer-events: auto;
+  opacity: 0; /* Start invisible for fade-in */
+  animation: 
+    fadeInFirefly 3s ease forwards,
+    initialDrift 20s infinite ease-in-out;
+  transition: 
+    transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.5s ease,
+    background 0.5s ease;
+}
+
+.interactive-firefly:hover {
+  transform: scale(3);
+  background: 
+    radial-gradient(circle, #ff66b2 15%, #ffea8a 40%, rgba(255, 234, 138, 0) 70%),
+    radial-gradient(circle, #ff66b2 20%, transparent 60%);
+  box-shadow: 
+    0 0 30px 12px rgba(255, 102, 178, 0.4),
+    0 0 40px 20px rgba(255, 234, 138, 0.3);
+}
+.firefly-message {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 102, 178, 0.9);
+  font-family: 'Arial', sans-serif;
+  font-size: 1.2rem;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  text-shadow: 0 0 8px rgba(255, 102, 178, 0.3);
+  animation: floatText 4s ease-out forwards;
+  white-space: nowrap;
+}
+
+@keyframes floatText {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  20% {
+    opacity: 0.9;
+    transform: translate(-50%, 0);
+  }
+  80% {
+    opacity: 0.9;
+    transform: translate(-50%, -10px);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+}
+@keyframes fadeInFirefly {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes initialDrift {
+  0%, 100% { transform: translate(-10px, -5px) rotate(5deg); }
+  25% { transform: translate(15px, -20px) rotate(-3deg); }
+  50% { transform: translate(-5px, -35px) rotate(7deg); }
+  75% { transform: translate(20px, -50px) rotate(-5deg); }
 }
 
 @keyframes initialDrift {
@@ -977,6 +1039,7 @@ mask-image: linear-gradient(to top, transparent 40%, #079097 80%) !important;
   50% { transform: translate(-10px, -40px); }
   75% { transform: translate(10px, -60px); }
 }
+
 @keyframes textGlow {
   0% {
     text-shadow: 0 0 0px rgba(255, 234, 138, 0);
@@ -988,6 +1051,7 @@ mask-image: linear-gradient(to top, transparent 40%, #079097 80%) !important;
     text-shadow: 0 0 0px rgba(255, 234, 138, 0);
   }
 }
+
 
 
 @keyframes leaf-ans-1 {
